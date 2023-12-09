@@ -1,0 +1,19 @@
+
+- name: Create dagster user and group
+  ansible.builtin.user:
+    name: dagster
+    group: dagster
+
+- name: Make ubuntu member of dagster group
+
+- name: Create dagster server location
+  ansible.builtin.file:
+    path: /opt/dagster 
+    owner: dagster
+    group: dagster
+    state: directory
+
+- name: Install dagster webserver
+  ansible.builtin.pip:
+    name: dagster-webserver
+    chdir: /opt/dagster

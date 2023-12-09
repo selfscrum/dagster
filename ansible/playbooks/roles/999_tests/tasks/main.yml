@@ -1,0 +1,8 @@
+- name: Get config parameters from original
+  ansible.builtin.include_vars: 
+    file: "{{rootdir}}/../{{system['test_configuration']}}"
+    name: original_system
+
+- name: check webserver is running
+  ansible.builtin.include_tasks: webserver.yml
+

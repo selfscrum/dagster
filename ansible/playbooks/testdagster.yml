@@ -1,0 +1,12 @@
+#
+# Playbook to configure the transformation code for DBT
+#
+---
+- hosts: localhost
+  gather_facts: no
+  ignore_errors: yes
+  become: yes
+  roles:
+    - 000_init
+    - 999_tests
+

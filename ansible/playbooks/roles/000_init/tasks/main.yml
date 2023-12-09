@@ -1,0 +1,26 @@
+# 000_init
+# Read the global json variable structure
+---
+- name: Install community module
+  ansible.builtin.command: ansible-galaxy collection install community.general
+
+    #- name: Install collection aws
+    #community.general.ansible_galaxy_install:
+    #type: collection
+    #name: amazon.aws
+
+- name: Install collection postgresql
+  community.general.ansible_galaxy_install:
+    type: collection
+    name: community.postgresql
+
+- name: Get config parameters
+  ansible.builtin.include_vars: 
+    file: "{{system_cfg}}"
+    name: system
+
+- amazon.aws.ec2_metadata_facts:
+- debug:
+    msg: "region= {{ ansible_ec2_instance_identity_document_region }}"
+
+

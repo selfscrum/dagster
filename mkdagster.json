@@ -1,0 +1,7 @@
+{
+    "dagster_database" : {
+        "database_aws_secret_name" : "/nbm/dev/aurora",
+        "database_name" : "dagster"
+    }
+}
+
