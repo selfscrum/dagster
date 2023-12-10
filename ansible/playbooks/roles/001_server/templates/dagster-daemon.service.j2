@@ -1,0 +1,17 @@
+[Unit]
+Description=Dagster-Daemon
+Documentation=http://docs.dagster.io
+
+[Service]
+TimeoutStartSec=0
+Type=simple
+Environment=DAGSTER_HOME=/opt/dagster/dagster_home
+WorkingDirectory=/opt/dagster
+
+User=dagster
+Group=dagster
+
+ExecStart=/usr/local/bin/dagster-daemon run
+
+[Install]
+WantedBy=multi-user.target

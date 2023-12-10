@@ -5,4 +5,5 @@
   roles:
     - 000_init
     - 001_server
+    - 002_config
 

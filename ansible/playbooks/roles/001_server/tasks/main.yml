@@ -1,19 +1,65 @@
+## 001_server/tasks/main.yml
+## Install the dagster servers
+##
 
-- name: Create dagster user and group
+
+## User/Group/Directories
+##
+- name: Ensure group "dagster" exists
+  ansible.builtin.group:
+    name: dagster
+    state: present
+
+- name: Ensure user "dagster" exists
   ansible.builtin.user:
     name: dagster
     group: dagster
 
-- name: Make ubuntu member of dagster group
+- name: Ensure ubuntu is member of dagster
+  ansible.builtin.user:
+    name: ubuntu
+    append: true
+    groups: dagster
 
-- name: Create dagster server location
+
+- name: Ensure the dagster home directory exists
   ansible.builtin.file:
-    path: /opt/dagster 
+    path: /opt/dagster/dagster_home 
     owner: dagster
     group: dagster
     state: directory
 
-- name: Install dagster webserver
+## webserver
+##
+- name: Ensure the dagster webserver is installed
   ansible.builtin.pip:
     name: dagster-webserver
-    chdir: /opt/dagster
+
+- name: Provide dagster-webserver.service
+  template:
+    src: dagster-webserver.service.j2
+    dest: /usr/lib/systemd/system/dagster-webserver.service
+  notify: "Ensure that dagster-webserver service is restarted"
+
+## daemon
+##
+- name: Ensure the dagster daemon is installed
+  ansible.builtin.pip:
+    name: dagster
+
+- name: Provide dagster-daemon.service
+  template:
+    src: dagster-daemon.service.j2
+    dest: /usr/lib/systemd/system/dagster-daemon.service
+  notify: "Ensure that dagster-daemon service is restarted"
+
+## ownership
+##
+- name: Ensure that the dagster directory belongs to user/group dagster
+  ansible.builtin.file:
+    path: /opt/dagster
+    state: directory
+    recurse: yes
+    owner: dagster
+    group: dagster
+
